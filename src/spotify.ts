@@ -20,6 +20,7 @@ export const SPOTIFY_AUTH_URI = "https://accounts.spotify.com/authorize?" + quer
 
 interface UseSpotifyToken {
   token: string | null;
+  reloadToken: () => void;
 }
 
 export const useSpotifyToken = (code?: string): UseSpotifyToken  => {
@@ -50,6 +51,7 @@ export const useSpotifyToken = (code?: string): UseSpotifyToken  => {
 
   return {
     token,
+    reloadToken,
   }
 }
 
@@ -106,7 +108,6 @@ export const useSpotifyPlaylist = (content: string): AsyncState<SpotifySong[][]>
       if (c.trim().length === 0) {
         return [];
       }
-      console.log(`SEARCHING FOR "${c}"`);
 
       const url = queryString.stringifyUrl({
         url: SPOTIFY_SEARCH_API,
@@ -114,7 +115,7 @@ export const useSpotifyPlaylist = (content: string): AsyncState<SpotifySong[][]>
           q: `track:${c}`,
           type: 'track',
           market: 'US',
-          limit: 5,
+          limit: 10,
         },
       });
 
